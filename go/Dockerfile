@@ -13,10 +13,6 @@ RUN apt-get update && \
 ADD src /go/src/api
 WORKDIR /go/src/api
 
-# install package management tool (dep).
-ARG DEP_RELEASE_TAG=v0.5.0
-RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-
 # install packages. (vendoring: /go/bin/api/vendor/)
 #RUN dep ensure -v -vendor-only=true
 
