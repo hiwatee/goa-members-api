@@ -1,4 +1,4 @@
-package design
+package api
 
 import (
 	. "goa.design/goa/v3/dsl"

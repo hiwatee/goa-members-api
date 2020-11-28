@@ -1,4 +1,4 @@
-module goa-members-backend
+module api
 
 go 1.15
 

@@ -13,6 +13,10 @@ RUN apt-get update && \
 ADD src /go/src/api
 WORKDIR /go/src/api
 
+RUN go mod init
+RUN go get -u goa.design/goa/v3
+RUN go get -u goa.design/goa/v3/...
+
 # install packages. (vendoring: /go/bin/api/vendor/)
 #RUN dep ensure -v -vendor-only=true
 

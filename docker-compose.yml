@@ -1,12 +1,11 @@
 version: '3'
 services:
   go:
-    image: my/golang-sample-api
     build:
       context: ./
       dockerfile: ./go/Dockerfile
     ports:
-      - 8080:8080
+      - 8000:8000
     volumes:
       - ./src:/go/src:cached
       # exclude volumes
