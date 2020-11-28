@@ -1,0 +1,19 @@
+# https://github.com/github/gitignore/blob/master/Go.gitignore
+
+.idea
+.DS_Store
+vendor
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+godobin*
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
