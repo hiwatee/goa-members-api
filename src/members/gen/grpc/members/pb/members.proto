@@ -1,0 +1,29 @@
+// Code generated with goa v3.2.5, DO NOT EDIT.
+//
+// members protocol buffer definition
+//
+// Command:
+// $ goa gen members/design
+
+syntax = "proto3";
+
+package members;
+
+option go_package = "memberspb";
+
+// メンバーの一覧を取得する
+service Members {
+	// Add implements add.
+	rpc Add (AddRequest) returns (AddResponse);
+}
+
+message AddRequest {
+	// Left operand
+	sint32 a = 1;
+	// Right operand
+	sint32 b = 2;
+}
+
+message AddResponse {
+	sint32 field = 1;
+}

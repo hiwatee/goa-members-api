@@ -6,12 +6,11 @@ ENV LANG C.UTF-8
 ENV TZ Asia/Tokyo
 
 # system update
-RUN apt-get update && \
-    apt-get install -y vim less
+RUN apt-get update && apt-get install -y golang-goprotobuf-dev
 
 # copy application code from host.
-ADD src /go/src/api
-WORKDIR /go/src/api
+ADD src /go/src/members
+WORKDIR /go/src/members
 
 RUN go mod init
 RUN go get -u goa.design/goa/v3

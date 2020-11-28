@@ -17,3 +17,6 @@ godobin*
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+#goa
+src/api/gen

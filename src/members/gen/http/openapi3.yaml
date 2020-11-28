@@ -1,0 +1,71 @@
+openapi: 3.0.3
+info:
+  title: Coinspace Members
+  description: メンバーズサイト
+  version: "1.0"
+servers:
+- url: http://localhost:8000/api/v1
+paths:
+  /add/{a}/{b}:
+    get:
+      tags:
+      - members
+      summary: add members
+      operationId: members#add
+      parameters:
+      - name: a
+        in: path
+        description: Left operand
+        required: true
+        schema:
+          type: integer
+          description: Left operand
+          example: 2576764309458265180
+          format: int64
+        example: 1426644937285389814
+      - name: b
+        in: path
+        description: Right operand
+        required: true
+        schema:
+          type: integer
+          description: Right operand
+          example: 6204338187602879246
+          format: int64
+        example: 2990476647713688539
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 6726056977836663461
+                format: int64
+              example: 8936830732433034958
+  /openapi.json:
+    get:
+      tags:
+      - members
+      summary: Download gen/http/openapi3.json
+      operationId: members#/openapi.json
+      responses:
+        "200":
+          description: File downloaded
+  /swagger/{*filepath}:
+    get:
+      tags:
+      - members
+      summary: Download swagger-ui
+      operationId: members#/swagger/{*filepath}
+      parameters:
+      - name: filepath
+        in: path
+        description: Relative file path
+        required: true
+      responses:
+        "200":
+          description: File not found
+        "404":
+          description: File not found
+components: {}
