@@ -45,8 +45,8 @@ var _ = Service("members", func() {
 
 		// HTTP トランスポート用の定義
 		HTTP(func() {
-			GET("/add/{a}/{b}") // GET エンドポイント
-			Response(StatusOK)  // レスポンスのステータスは Status OK = 200 を返す
+			GET("/api/v1/add/{a}/{b}") // GET エンドポイント
+			Response(StatusOK)         // レスポンスのステータスは Status OK = 200 を返す
 		})
 
 		// GRPC トランスポート用の定義

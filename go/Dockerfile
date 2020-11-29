@@ -13,10 +13,10 @@ ADD src /go/src/members
 WORKDIR /go/src/members
 
 RUN go mod init
-RUN go get -u goa.design/goa/v3
-RUN go get -u goa.design/goa/v3/...
-RUN go get -u github.com/golang/protobuf/protoc-gen-go
+RUN go get goa.design/goa/v3
+RUN go get goa.design/goa/v3/...
+RUN go get github.com/golang/protobuf/protoc-gen-go
 
 # ビルドをさせたほうが良いかもしれない
 
-ENTRYPOINT ["./members"]
+# ENTRYPOINT ["./members"]

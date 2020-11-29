@@ -20,5 +20,6 @@ func NewMembers(logger *log.Logger) members.Service {
 // Add implements add.
 func (s *memberssrvc) Add(ctx context.Context, p *members.AddPayload) (res int, err error) {
 	s.logger.Print("members.add")
-	return
+	s.logger.Print("p")
+	return p.A + p.B, nil
 }

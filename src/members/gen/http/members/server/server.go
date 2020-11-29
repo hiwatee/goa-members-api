@@ -57,7 +57,7 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"Add", "GET", "/add/{a}/{b}"},
+			{"Add", "GET", "/api/v1/add/{a}/{b}"},
 			{"swagger-ui", "GET", "/swagger"},
 			{"gen/http/openapi3.json", "GET", "/openapi.json"},
 		},
@@ -98,7 +98,7 @@ func MountAddHandler(mux goahttp.Muxer, h http.Handler) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/add/{a}/{b}", f)
+	mux.Handle("GET", "/api/v1/add/{a}/{b}", f)
 }
 
 // NewAddHandler creates a HTTP handler which loads the HTTP request and calls
