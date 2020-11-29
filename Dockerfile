@@ -9,8 +9,8 @@ ENV TZ Asia/Tokyo
 RUN apt-get update && apt-get install -y golang-goprotobuf-dev
 
 # copy application code from host.
-ADD . /go/src/members
-WORKDIR /go/src/members
+ADD . /go/src
+WORKDIR /go/src
 
 RUN go get goa.design/goa/v3
 RUN go get goa.design/goa/v3/...
