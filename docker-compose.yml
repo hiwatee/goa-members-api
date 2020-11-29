@@ -1,14 +1,12 @@
 version: '3'
 services:
   go:
-    build:
-      context: ./
-      dockerfile: ./go/Dockerfile
+    build: .
     ports:
       - 8000:8000
       - 8080:8080
     volumes:
-      - ./src:/go/src:cached
+      - .:/go/src:cached
       # exclude volumes
       #- /go/src/api/vendor
       #- /go/src/api/swagger
