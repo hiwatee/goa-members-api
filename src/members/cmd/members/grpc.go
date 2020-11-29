@@ -1,11 +1,11 @@
 package main
 
 import (
-	memberspb "api/gen/grpc/members/pb"
-	memberssvr "api/gen/grpc/members/server"
-	members "api/gen/members"
 	"context"
 	"log"
+	memberspb "members/gen/grpc/members/pb"
+	memberssvr "members/gen/grpc/members/server"
+	members "members/gen/members"
 	"net"
 	"net/url"
 	"sync"

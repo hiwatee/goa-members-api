@@ -1,10 +1,10 @@
 package main
 
 import (
-	memberssvr "api/gen/http/members/server"
-	members "api/gen/members"
 	"context"
 	"log"
+	memberssvr "members/gen/http/members/server"
+	members "members/gen/members"
 	"net/http"
 	"net/url"
 	"os"

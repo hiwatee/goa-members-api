@@ -1,7 +1,7 @@
 package main
 
 import (
-	cli "api/gen/http/cli/members"
+	cli "members/gen/http/cli/members"
 	"net/http"
 	"time"
 

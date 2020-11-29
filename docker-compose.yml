@@ -6,6 +6,7 @@ services:
       dockerfile: ./go/Dockerfile
     ports:
       - 8000:8000
+      - 8080:8080
     volumes:
       - ./src:/go/src:cached
       # exclude volumes

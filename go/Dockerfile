@@ -15,6 +15,7 @@ WORKDIR /go/src/members
 RUN go mod init
 RUN go get -u goa.design/goa/v3
 RUN go get -u goa.design/goa/v3/...
+RUN go get -u github.com/golang/protobuf/protoc-gen-go
 
 # install packages. (vendoring: /go/bin/api/vendor/)
 #RUN dep ensure -v -vendor-only=true

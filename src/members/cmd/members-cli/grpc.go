@@ -1,8 +1,8 @@
 package main
 
 import (
-	cli "api/gen/grpc/cli/members"
 	"fmt"
+	cli "members/gen/grpc/cli/members"
 	"os"
 
 	goa "goa.design/goa/v3/pkg"

@@ -1,9 +1,9 @@
 package membersapi
 
 import (
-	members "api/gen/members"
 	"context"
 	"log"
+	members "members/gen/members"
 )
 
 // members service example implementation.

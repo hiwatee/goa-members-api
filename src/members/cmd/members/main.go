@@ -1,12 +1,12 @@
 package main
 
 import (
-	membersapi "api"
-	members "api/gen/members"
 	"context"
 	"flag"
 	"fmt"
 	"log"
+	membersapi "members"
+	members "members/gen/members"
 	"net/url"
 	"os"
 	"os/signal"
