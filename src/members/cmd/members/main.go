@@ -72,7 +72,7 @@ func main() {
 	switch *hostF {
 	case "localhost":
 		{
-			addr := "http://localhost:8000/api/v1"
+			addr := "http://0.0.0.0:8000/api/v1"
 			u, err := url.Parse(addr)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "invalid URL %#v: %s\n", addr, err)
@@ -94,7 +94,7 @@ func main() {
 		}
 
 		{
-			addr := "grpc://localhost:8080/api/v1"
+			addr := "grpc://0.0.0.0:8080/api/v1"
 			u, err := url.Parse(addr)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "invalid URL %#v: %s\n", addr, err)

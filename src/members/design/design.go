@@ -13,8 +13,8 @@ var _ = API("members", func() {
 	// サーバ定義
 	Server("members", func() {
 		Host("localhost", func() {
-			URI("http://localhost:8000/api/v1") // HTTP REST API
-			URI("grpc://localhost:8080/api/v1") // gRPC
+			URI("http://0.0.0.0:8000/api/v1") // HTTP REST API
+			URI("grpc://0.0.0.0:8080/api/v1") // gRPC
 		})
 	})
 })

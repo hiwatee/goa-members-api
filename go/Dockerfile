@@ -13,12 +13,14 @@ ADD src /go/src/members
 WORKDIR /go/src/members
 
 RUN go mod init
-# RUN go build ./cmd/members
+RUN go get -u goa.design/goa/v3
+RUN go get -u goa.design/goa/v3/...
+RUN go get -u github.com/golang/protobuf/protoc-gen-go
 
 # install
 # RUN go get -u goa.design/goa/v3
 # RUN go get -u goa.design/goa/v3/...
 # RUN go get -u github.com/golang/protobuf/protoc-gen-go
 
-EXPOSE 8080
-CMD ["./members"]
+# EXPOSE 8000
+# ENTRYPOINT ["./members"]

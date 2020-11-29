@@ -3,7 +3,7 @@ info:
   title: Coinspace Members
   description: メンバーズサイト
   version: ""
-host: localhost:8000
+host: 0.0.0.0:8000
 consumes:
 - application/json
 - application/xml
