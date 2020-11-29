@@ -17,10 +17,6 @@ RUN go get -u goa.design/goa/v3
 RUN go get -u goa.design/goa/v3/...
 RUN go get -u github.com/golang/protobuf/protoc-gen-go
 
-# install
-# RUN go get -u goa.design/goa/v3
-# RUN go get -u goa.design/goa/v3/...
-# RUN go get -u github.com/golang/protobuf/protoc-gen-go
+# ビルドをさせたほうが良いかもしれない
 
-# EXPOSE 8000
-# ENTRYPOINT ["./members"]
+ENTRYPOINT ["./members"]
