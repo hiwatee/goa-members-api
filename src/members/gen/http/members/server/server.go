@@ -12,16 +12,19 @@ import (
 	members "members/gen/members"
 	"net/http"
 	"path"
+	"regexp"
 	"strings"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
+	"goa.design/plugins/v3/cors"
 )
 
 // Server lists the members service endpoint HTTP handlers.
 type Server struct {
 	Mounts []*MountPoint
 	Add    http.Handler
+	CORS   http.Handler
 }
 
 // ErrorNamer is an interface implemented by generated error structs that
@@ -57,11 +60,15 @@ func New(
 ) *Server {
 	return &Server{
 		Mounts: []*MountPoint{
-			{"Add", "GET", "/api/v1/add/{a}/{b}"},
+			{"Add", "GET", "/add/{a}/{b}"},
+			{"CORS", "OPTIONS", "/add/{a}/{b}"},
+			{"CORS", "OPTIONS", "/swagger/{*filepath}"},
+			{"CORS", "OPTIONS", "/openapi.json"},
 			{"swagger-ui", "GET", "/swagger"},
 			{"gen/http/openapi3.json", "GET", "/openapi.json"},
 		},
-		Add: NewAddHandler(e.Add, mux, decoder, encoder, errhandler, formatter),
+		Add:  NewAddHandler(e.Add, mux, decoder, encoder, errhandler, formatter),
+		CORS: NewCORSHandler(),
 	}
 }
 
@@ -71,11 +78,13 @@ func (s *Server) Service() string { return "members" }
 // Use wraps the server handlers with the given middleware.
 func (s *Server) Use(m func(http.Handler) http.Handler) {
 	s.Add = m(s.Add)
+	s.CORS = m(s.CORS)
 }
 
 // Mount configures the mux to serve the members endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountAddHandler(mux, h.Add)
+	MountCORSHandler(mux, h.CORS)
 	MountSwaggerUI(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		upath := path.Clean(r.URL.Path)
 		rpath := upath
@@ -92,13 +101,13 @@ func Mount(mux goahttp.Muxer, h *Server) {
 // MountAddHandler configures the mux to serve the "members" service "add"
 // endpoint.
 func MountAddHandler(mux goahttp.Muxer, h http.Handler) {
-	f, ok := h.(http.HandlerFunc)
+	f, ok := handleMembersOrigin(h).(http.HandlerFunc)
 	if !ok {
 		f = func(w http.ResponseWriter, r *http.Request) {
 			h.ServeHTTP(w, r)
 		}
 	}
-	mux.Handle("GET", "/api/v1/add/{a}/{b}", f)
+	mux.Handle("GET", "/add/{a}/{b}", f)
 }
 
 // NewAddHandler creates a HTTP handler which loads the HTTP request and calls
@@ -142,12 +151,64 @@ func NewAddHandler(
 
 // MountSwaggerUI configures the mux to serve GET request made to "/swagger".
 func MountSwaggerUI(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/swagger/", h.ServeHTTP)
-	mux.Handle("GET", "/swagger/*filepath", h.ServeHTTP)
+	mux.Handle("GET", "/swagger/", handleMembersOrigin(h).ServeHTTP)
+	mux.Handle("GET", "/swagger/*filepath", handleMembersOrigin(h).ServeHTTP)
 }
 
 // MountGenHTTPOpenapi3JSON configures the mux to serve GET request made to
 // "/openapi.json".
 func MountGenHTTPOpenapi3JSON(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/openapi.json", h.ServeHTTP)
+	mux.Handle("GET", "/openapi.json", handleMembersOrigin(h).ServeHTTP)
+}
+
+// MountCORSHandler configures the mux to serve the CORS endpoints for the
+// service members.
+func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
+	h = handleMembersOrigin(h)
+	f, ok := h.(http.HandlerFunc)
+	if !ok {
+		f = func(w http.ResponseWriter, r *http.Request) {
+			h.ServeHTTP(w, r)
+		}
+	}
+	mux.Handle("OPTIONS", "/add/{a}/{b}", f)
+	mux.Handle("OPTIONS", "/swagger/{*filepath}", f)
+	mux.Handle("OPTIONS", "/openapi.json", f)
+}
+
+// NewCORSHandler creates a HTTP handler which returns a simple 200 response.
+func NewCORSHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(200)
+	})
+}
+
+// handleMembersOrigin applies the CORS response headers corresponding to the
+// origin for the service members.
+func handleMembersOrigin(h http.Handler) http.Handler {
+	spec0 := regexp.MustCompile(".*localhost.*")
+	origHndlr := h.(http.HandlerFunc)
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin == "" {
+			// Not a CORS request
+			origHndlr(w, r)
+			return
+		}
+		if cors.MatchOriginRegexp(origin, spec0) {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+			w.Header().Set("Vary", "Origin")
+			w.Header().Set("Access-Control-Max-Age", "600")
+			w.Header().Set("Access-Control-Allow-Credentials", "false")
+			if acrm := r.Header.Get("Access-Control-Request-Method"); acrm != "" {
+				// We are handling a preflight request
+				w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+				w.Header().Set("Access-Control-Allow-Headers", "content-type")
+			}
+			origHndlr(w, r)
+			return
+		}
+		origHndlr(w, r)
+		return
+	})
 }

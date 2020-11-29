@@ -13,7 +13,7 @@ produces:
 - application/xml
 - application/gob
 paths:
-  /api/v1/add/{a}/{b}:
+  /add/{a}/{b}:
     get:
       tags:
       - members

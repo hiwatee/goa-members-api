@@ -13,5 +13,5 @@ import (
 
 // AddMembersPath returns the URL path to the members service add HTTP endpoint.
 func AddMembersPath(a int, b int) string {
-	return fmt.Sprintf("/api/v1/add/%v/%v", a, b)
+	return fmt.Sprintf("/add/%v/%v", a, b)
 }

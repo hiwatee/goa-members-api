@@ -2,6 +2,7 @@ package design
 
 import (
 	. "goa.design/goa/v3/dsl"
+	cors "goa.design/plugins/v3/cors/dsl"
 )
 
 // API 定義
@@ -10,11 +11,17 @@ var _ = API("members", func() {
 	Title("Coinspace Members")
 	Description("メンバーズサイト")
 
+	cors.Origin("/.*localhost.*/", func() {
+		cors.Headers("content-type")
+		cors.Methods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+		cors.MaxAge(600)
+	})
+
 	// サーバ定義
 	Server("members", func() {
 		Host("localhost", func() {
-			URI("http://0.0.0.0:8000/api/v1") // HTTP REST API
-			URI("grpc://0.0.0.0:8080/api/v1") // gRPC
+			URI("http://0.0.0.0:8000") // HTTP REST API
+			URI("grpc://0.0.0.0:8080") // gRPC
 		})
 	})
 })
@@ -45,8 +52,8 @@ var _ = Service("members", func() {
 
 		// HTTP トランスポート用の定義
 		HTTP(func() {
-			GET("/api/v1/add/{a}/{b}") // GET エンドポイント
-			Response(StatusOK)         // レスポンスのステータスは Status OK = 200 を返す
+			GET("/add/{a}/{b}") // GET エンドポイント
+			Response(StatusOK)  // レスポンスのステータスは Status OK = 200 を返す
 		})
 
 		// GRPC トランスポート用の定義
