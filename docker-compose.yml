@@ -13,4 +13,3 @@ services:
       #- /go/src/api/vendor
       #- /go/src/api/swagger
     tty: true
-    stdin_open: true

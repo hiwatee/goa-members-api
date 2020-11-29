@@ -11,8 +11,6 @@ import (
 	"context"
 	members "members/gen/members"
 	"net/http"
-	"path"
-	"strings"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
@@ -58,8 +56,6 @@ func New(
 	return &Server{
 		Mounts: []*MountPoint{
 			{"Add", "GET", "/add/{a}/{b}"},
-			{"swagger-ui", "GET", "/swagger"},
-			{"gen/http/openapi3.json", "GET", "/openapi.json"},
 		},
 		Add: NewAddHandler(e.Add, mux, decoder, encoder, errhandler, formatter),
 	}
@@ -76,17 +72,6 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 // Mount configures the mux to serve the members endpoints.
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountAddHandler(mux, h.Add)
-	MountSwaggerUI(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		upath := path.Clean(r.URL.Path)
-		rpath := upath
-		if strings.HasPrefix(upath, "/swagger") {
-			rpath = upath[8:]
-		}
-		http.ServeFile(w, r, path.Join("swagger-ui", rpath))
-	}))
-	MountGenHTTPOpenapi3JSON(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "gen/http/openapi3.json")
-	}))
 }
 
 // MountAddHandler configures the mux to serve the "members" service "add"
@@ -138,16 +123,4 @@ func NewAddHandler(
 			errhandler(ctx, w, err)
 		}
 	})
-}
-
-// MountSwaggerUI configures the mux to serve GET request made to "/swagger".
-func MountSwaggerUI(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/swagger/", h.ServeHTTP)
-	mux.Handle("GET", "/swagger/*filepath", h.ServeHTTP)
-}
-
-// MountGenHTTPOpenapi3JSON configures the mux to serve GET request made to
-// "/openapi.json".
-func MountGenHTTPOpenapi3JSON(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/openapi.json", h.ServeHTTP)
 }

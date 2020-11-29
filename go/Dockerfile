@@ -13,18 +13,12 @@ ADD src /go/src/members
 WORKDIR /go/src/members
 
 RUN go mod init
-RUN go get -u goa.design/goa/v3
-RUN go get -u goa.design/goa/v3/...
-RUN go get -u github.com/golang/protobuf/protoc-gen-go
+# RUN go build ./cmd/members
 
-# install packages. (vendoring: /go/bin/api/vendor/)
-#RUN dep ensure -v -vendor-only=true
+# install
+# RUN go get -u goa.design/goa/v3
+# RUN go get -u goa.design/goa/v3/...
+# RUN go get -u github.com/golang/protobuf/protoc-gen-go
 
-# install development tools.
-#RUN go install api/vendor/github.com/goadesign/goa/goagen
-
-# build
-#RUN go build -o vendor/server
-
-#EXPOSE 8080
-#CMD ["./vendor/server"]
+EXPOSE 8080
+CMD ["./members"]
