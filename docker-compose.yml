@@ -11,3 +11,11 @@ services:
       #- /go/src/api/vendor
       #- /go/src/api/swagger
     tty: true
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8002:8080"
+    volumes:
+      - ./gen/http/openapi.yaml:/openapi.yaml
+    environment:
+      SWAGGER_JSON: /openapi.yaml
