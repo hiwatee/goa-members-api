@@ -20,9 +20,9 @@ paths:
         schema:
           type: integer
           description: Left operand
-          example: 2576764309458265180
+          example: 217465865381904383
           format: int64
-        example: 1426644937285389814
+        example: 3226864031920569862
       - name: b
         in: path
         description: Right operand
@@ -30,9 +30,9 @@ paths:
         schema:
           type: integer
           description: Right operand
-          example: 6204338187602879246
+          example: 5703713078413232962
           format: int64
-        example: 2990476647713688539
+        example: 3854952180603418076
       responses:
         "200":
           description: ""
@@ -40,32 +40,7 @@ paths:
             application/json:
               schema:
                 type: integer
-                example: 6726056977836663461
+                example: 2366914043927372495
                 format: int64
-              example: 8936830732433034958
-  /openapi.json:
-    get:
-      tags:
-      - members
-      summary: Download gen/http/openapi3.json
-      operationId: members#/openapi.json
-      responses:
-        "200":
-          description: File downloaded
-  /swagger/{*filepath}:
-    get:
-      tags:
-      - members
-      summary: Download swagger-ui
-      operationId: members#/swagger/{*filepath}
-      parameters:
-      - name: filepath
-        in: path
-        description: Relative file path
-        required: true
-      responses:
-        "200":
-          description: File not found
-        "404":
-          description: File not found
+              example: 3349327047810797608
 components: {}

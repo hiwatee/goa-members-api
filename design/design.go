@@ -61,7 +61,4 @@ var _ = Service("members", func() {
 			Response(CodeOK) // 手すぽん巣のステータスは CodeOK を返す
 		})
 	})
-
-	Files("/swagger/{*filepath}", "swagger-ui")
-	Files("/openapi.json", "gen/http/openapi3.json")
 })

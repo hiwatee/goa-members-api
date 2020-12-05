@@ -11,9 +11,7 @@ import (
 	"context"
 	members "members/gen/members"
 	"net/http"
-	"path"
 	"regexp"
-	"strings"
 
 	goahttp "goa.design/goa/v3/http"
 	goa "goa.design/goa/v3/pkg"
@@ -62,10 +60,6 @@ func New(
 		Mounts: []*MountPoint{
 			{"Add", "GET", "/add/{a}/{b}"},
 			{"CORS", "OPTIONS", "/add/{a}/{b}"},
-			{"CORS", "OPTIONS", "/swagger/{*filepath}"},
-			{"CORS", "OPTIONS", "/openapi.json"},
-			{"swagger-ui", "GET", "/swagger"},
-			{"gen/http/openapi3.json", "GET", "/openapi.json"},
 		},
 		Add:  NewAddHandler(e.Add, mux, decoder, encoder, errhandler, formatter),
 		CORS: NewCORSHandler(),
@@ -85,17 +79,6 @@ func (s *Server) Use(m func(http.Handler) http.Handler) {
 func Mount(mux goahttp.Muxer, h *Server) {
 	MountAddHandler(mux, h.Add)
 	MountCORSHandler(mux, h.CORS)
-	MountSwaggerUI(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		upath := path.Clean(r.URL.Path)
-		rpath := upath
-		if strings.HasPrefix(upath, "/swagger") {
-			rpath = upath[8:]
-		}
-		http.ServeFile(w, r, path.Join("swagger-ui", rpath))
-	}))
-	MountGenHTTPOpenapi3JSON(mux, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "gen/http/openapi3.json")
-	}))
 }
 
 // MountAddHandler configures the mux to serve the "members" service "add"
@@ -149,18 +132,6 @@ func NewAddHandler(
 	})
 }
 
-// MountSwaggerUI configures the mux to serve GET request made to "/swagger".
-func MountSwaggerUI(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/swagger/", handleMembersOrigin(h).ServeHTTP)
-	mux.Handle("GET", "/swagger/*filepath", handleMembersOrigin(h).ServeHTTP)
-}
-
-// MountGenHTTPOpenapi3JSON configures the mux to serve GET request made to
-// "/openapi.json".
-func MountGenHTTPOpenapi3JSON(mux goahttp.Muxer, h http.Handler) {
-	mux.Handle("GET", "/openapi.json", handleMembersOrigin(h).ServeHTTP)
-}
-
 // MountCORSHandler configures the mux to serve the CORS endpoints for the
 // service members.
 func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
@@ -172,8 +143,6 @@ func MountCORSHandler(mux goahttp.Muxer, h http.Handler) {
 		}
 	}
 	mux.Handle("OPTIONS", "/add/{a}/{b}", f)
-	mux.Handle("OPTIONS", "/swagger/{*filepath}", f)
-	mux.Handle("OPTIONS", "/openapi.json", f)
 }
 
 // NewCORSHandler creates a HTTP handler which returns a simple 200 response.
