@@ -20,3 +20,7 @@ godobin*
 
 #goa
 src/api/gen
+
+#datbase
+localhost.sql
+db_data
