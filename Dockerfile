@@ -8,8 +8,8 @@ ENV TZ Asia/Tokyo
 # system update
 RUN apt-get update && apt-get install -y golang-goprotobuf-dev
 
-# copy application code from host.
-ADD . /go/src
+# COPPY modulefile
+COPY go.mod go.sum /go/src/
 WORKDIR /go/src
 
 # install goa
@@ -20,4 +20,11 @@ RUN go get github.com/golang/protobuf/protoc-gen-go
 # install realize
 RUN GO111MODULE=off go get github.com/oxequa/realize
 
-ENTRYPOINT ["entrypoint.sh"]
+# copy application code from host.
+ADD . /go/src
+
+# entrypoint permission settings
+COPY ./docker/entrypoint.sh /
+RUN chmod 777 /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

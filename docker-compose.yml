@@ -10,7 +10,7 @@ services:
       # exclude volumes
       #- /go/src/api/vendor
       #- /go/src/api/swagger
-    tty: true
+    # tty: true
   swagger-ui:
     image: swaggerapi/swagger-ui
     ports:
