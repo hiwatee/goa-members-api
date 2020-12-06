@@ -12,10 +12,12 @@ RUN apt-get update && apt-get install -y golang-goprotobuf-dev
 ADD . /go/src
 WORKDIR /go/src
 
+# install goa
 RUN go get goa.design/goa/v3
 RUN go get goa.design/goa/v3/...
 RUN go get github.com/golang/protobuf/protoc-gen-go
 
-# ビルドをさせたほうが良いかもしれない
+# install realize
+RUN GO111MODULE=off go get github.com/oxequa/realize
 
 # ENTRYPOINT ["./members"]
