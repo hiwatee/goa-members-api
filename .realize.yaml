@@ -3,9 +3,15 @@ settings:
     force: false
     interval: 0s
 schema:
-- name: goa-members-api
+- name: app-build
   path: .
-  commands: {}
+  commands:
+    install:
+      status: true
+      method: go build ./cmd/members
+    run:
+      status: true
+      method: ./members
   watcher:
     extensions:
     - go
