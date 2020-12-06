@@ -20,4 +20,4 @@ RUN go get github.com/golang/protobuf/protoc-gen-go
 # install realize
 RUN GO111MODULE=off go get github.com/oxequa/realize
 
-# ENTRYPOINT ["./members"]
+ENTRYPOINT ["entrypoint.sh"]
